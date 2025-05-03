@@ -1,0 +1,17 @@
+# Launch terminal commands 
+terminals:
+  [
+    "echo '{\"cells\":[{\"cell_type\":\"code\",\"metadata\":{},\"source\":[\"# write code here\"],\"outputs\":[]}],\"metadata\":{},\"nbformat\":4,\"nbformat_minor\":5}' > test.ipynb || true",
+    "export PATH=\"$HOME/.local/bin:$PATH\" && pip install --user notebook && jupyter notebook test.ipynb --no-browser --port=1337 --ip=0.0.0.0 --NotebookApp.token='' --NotebookApp.password=''"
+  ]
+
+# Automatically open test.ipynb (this helps in Codedamn sidebar)
+tabs: ["test.ipynb"]
+
+# Run button (only for .py files)
+run-button: |
+  if [[ "$$file" == *.py ]]; then
+    python3 "$$file"
+  else
+    echo "❌ Run button only works for .py files. Open test.ipynb at https://fought-pull.run-code.org to run the notebook."
+  end
