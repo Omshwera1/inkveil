@@ -5,6 +5,8 @@ import Footer from "@/components/Footer";
 import { prisma } from "@/lib/prisma";
 import FaqSection from "@/components/FaqSection";
 
+export const dynamic = "force-dynamic";
+
 const CATEGORY_ICON: Record<string, string> = {
   flower: "🌸",
   wristband: "🖐️",

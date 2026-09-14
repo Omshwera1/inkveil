@@ -1,12 +1,20 @@
 import { PrismaClient } from "@/generated/prisma/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
+function connectionString() {
+  return (
+    process.env.POSTGRES_PRISMA_URL ??
+    process.env.DATABASE_URL ??
+    (() => {
+      throw new Error("No database connection string found (POSTGRES_PRISMA_URL or DATABASE_URL).");
+    })()
+  );
+}
+
 function createClient() {
-  const adapter = new PrismaBetterSqlite3({
-    url: process.env.DATABASE_URL as string,
-  });
+  const adapter = new PrismaPg({ connectionString: connectionString() });
   return new PrismaClient({ adapter });
 }
 

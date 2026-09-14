@@ -1,14 +1,17 @@
 # InkVeil
 
-A full-stack temporary-tattoo e-commerce site built with Next.js (App Router), Prisma + SQLite, and a JWT-based admin panel.
+A full-stack temporary-tattoo e-commerce site built with Next.js (App Router), Prisma + PostgreSQL, and a JWT-based admin panel.
 
 ## Stack
 
 - **Frontend**: Next.js 16, React 19, Tailwind CSS 4
-- **Backend**: Next.js API routes, Prisma ORM, SQLite (via `better-sqlite3` driver adapter)
+- **Backend**: Next.js API routes, Prisma ORM, PostgreSQL (via `pg` + `@prisma/adapter-pg`)
 - **Auth**: JWT stored in an httpOnly cookie, protecting `/admin/*` routes via `src/proxy.ts`
 
 ## Getting started
+
+1. Set `DATABASE_URL` in `.env` to a Postgres connection string (a free one can be created with `npx create-db`, or point it at any Postgres instance).
+2. Run:
 
 ```bash
 npm install
@@ -19,6 +22,14 @@ npm run dev
 ```
 
 Open http://localhost:3000 for the storefront.
+
+## Deploying on Vercel
+
+1. Add the **Vercel Postgres** (or any Postgres) integration to the project in the Vercel dashboard — this sets `POSTGRES_PRISMA_URL` and `POSTGRES_URL_NON_POOLING` automatically.
+2. Run `npx prisma migrate deploy` against that database (e.g. via `vercel env pull .env.local` locally, then `npx prisma migrate deploy`) and `npm run db:seed` once to create the admin user and starter data.
+3. Deploy — `npm run build` runs `prisma generate` automatically before `next build`.
+
+The homepage and product pages are marked `force-dynamic` so admin changes show up immediately without a redeploy.
 
 ## Admin panel
 
