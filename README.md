@@ -26,8 +26,7 @@ Open http://localhost:3000 for the storefront.
 ## Deploying on Vercel
 
 1. Add the **Vercel Postgres** (or any Postgres) integration to the project in the Vercel dashboard — this sets `POSTGRES_PRISMA_URL` and `POSTGRES_URL_NON_POOLING` automatically.
-2. Run `npx prisma migrate deploy` against that database (e.g. via `vercel env pull .env.local` locally, then `npx prisma migrate deploy`) and `npm run db:seed` once to create the admin user and starter data.
-3. Deploy — `npm run build` runs `prisma generate` automatically before `next build`.
+2. Deploy. The build script (`prisma generate && prisma migrate deploy && tsx prisma/seed.ts && next build`) applies any pending migrations and seeds the admin user + starter categories/products automatically on every build — no local terminal access needed. Both steps are idempotent (safe to re-run on every deploy).
 
 The homepage and product pages are marked `force-dynamic` so admin changes show up immediately without a redeploy.
 
